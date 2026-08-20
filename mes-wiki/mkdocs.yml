@@ -1,36 +1,58 @@
 site_name: 线束 MES 预研 Wiki
 site_description: 线束制造执行系统 MES 预研基线
+site_url: https://huzhihua.github.io/MES/
+repo_url: https://github.com/huzhihua/MES
+repo_name: huzhihua/MES
+
+theme:
+  name: material
+  language: zh
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.top
+    - navigation.indexes
+    - search.highlight
+    - search.suggest
+    - content.code.copy
+
+plugins:
+  - search
+
 nav:
-  - 首页: README.md
-  - 总览: docs/00-overview.md
+  - 首页: index.md
+  - 总览: 00-overview.md
   - 已有预研重整:
-      - 01 工艺路线: docs/01-process-routing.md
-      - 02 关键技术: docs/02-key-technical-points.md
-      - 03 云边协同: docs/03-cloud-edge.md
-      - 04 远程更新: docs/04-edge-update.md
-      - 05 标签打印: docs/05-label-printing.md
-      - 06 设备适配: docs/06-device-adapter.md
+      - 01 工艺路线: 01-process-routing.md
+      - 02 关键技术: 02-key-technical-points.md
+      - 03 云边协同: 03-cloud-edge.md
+      - 04 远程更新: 04-edge-update.md
+      - 05 标签打印: 05-label-printing.md
+      - 06 设备适配: 06-device-adapter.md
   - 核心业务模型:
-      - 07 领域模型: docs/07-domain-model.md
-      - 08 追溯: docs/08-traceability.md
-      - 09 质量: docs/09-quality.md
-      - 10 状态机: docs/10-workorder-state-machine.md
-      - 11 物料执行: docs/11-material-execution.md
-      - 12 ERP集成: docs/12-erp-integration.md
+      - 07 领域模型: 07-domain-model.md
+      - 08 追溯: 08-traceability.md
+      - 09 质量: 09-quality.md
+      - 10 状态机: 10-workorder-state-machine.md
+      - 11 物料执行: 11-material-execution.md
+      - 12 ERP集成: 12-erp-integration.md
   - 平台与产品化:
-      - 13 组织权限: docs/13-org-security.md
-      - 14 APS: docs/14-planning-aps.md
-      - 15 异常Andon: docs/15-andon.md
-      - 16 可观测性: docs/16-observability.md
-      - 17 安全: docs/17-security.md
-      - 18 灾备: docs/18-backup-dr.md
-      - 19 外围集成: docs/19-integration-boundary.md
-      - 20 实施: docs/20-implementation.md
-      - 21 配置中心: docs/21-config-center.md
-      - 22 版本兼容: docs/22-version-compatibility.md
-      - 23 数据生命周期: docs/23-data-lifecycle.md
-      - 24 测试验收: docs/24-test-acceptance.md
-      - 25 路线图: docs/25-roadmap.md
+      - 13 组织权限: 13-org-security.md
+      - 14 APS: 14-planning-aps.md
+      - 15 异常Andon: 15-andon.md
+      - 16 可观测性: 16-observability.md
+      - 17 安全: 17-security.md
+      - 18 灾备: 18-backup-dr.md
+      - 19 外围集成: 19-integration-boundary.md
+      - 20 实施: 20-implementation.md
+      - 21 配置中心: 21-config-center.md
+      - 22 版本兼容: 22-version-compatibility.md
+      - 23 数据生命周期: 23-data-lifecycle.md
+      - 24 测试验收: 24-test-acceptance.md
+      - 25 路线图: 25-roadmap.md
 markdown_extensions:
   - tables
   - fenced_code
+  - admonition
+  - toc:
+      permalink: true
