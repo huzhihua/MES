@@ -321,6 +321,86 @@ Modbus 常用于 PLC、仪表、传感器、变频器和简单设备。它的优
 - 错误写寄存器可能影响设备动作，L3 控制必须谨慎。
 - RS485 总线抗干扰、终端电阻、站号冲突需要现场工程能力。
 
+### 9.5 低成本 RS485/Modbus 网关样例：有人物联网 USR-TCP232-304
+
+**设备定位：** USR-TCP232-304 是有人物联网的一款单路 RS485 串口服务器，可用于 RS485 与 Ethernet 双向透传，也可作为 Modbus TCP 与 Modbus RTU 协议转换网关。
+
+在 MES 体系中，它不应被视为完整 Device Gateway，而更适合作为 Device Gateway 前面的低成本串口联网模块。
+
+```text
+RS485 / Modbus RTU 设备
+        ↓
+USR-TCP232-304
+        ↓ Ethernet / TCP
+MES Device Gateway
+        ↓
+MES 边缘应用
+```
+
+#### 适用场景
+
+- RS485 仪表、传感器、计数器；
+- 支持 Modbus RTU 的简单 PLC 或控制器；
+- 拉力测试仪、称重仪表、温湿度/压力/电流采集模块；
+- 老旧设备只需要运行、停止、报警、计数等 L1 数据；
+- 现场不方便直接拉长距离串口线，需要转换为以太网接入。
+
+#### 不适用场景
+
+- 多串口、多协议集中采集；
+- 高速质量曲线采集，如压接压力曲线；
+- 大量点位和复杂边缘计算；
+- 强实时互锁控制；
+- 需要统一 24V 工业供电且不方便增加 5V 电源的电柜。
+
+#### 关键能力
+
+| 项目 | 能力 |
+|---|---|
+| 串口 | 1 路 RS485 |
+| 网口 | 1 路 RJ45，10/100Mbps |
+| 波特率 | 600bps ~ 230.4Kbps |
+| 工作模式 | TCP Server、TCP Client、UDP、HTTPD Client、MQTT |
+| Modbus | 支持 Modbus TCP/RTU 转换、多主机轮询、自定义轮询 |
+| 边缘采集 | 支持简单点位采集和 JSON 上报，适合轻量场景 |
+| 供电 | DC 5.0 ~ 7.0V |
+| 工作温度 | 官方标称 -40 ~ 85℃ |
+
+#### MES 接入建议
+
+推荐模式：
+
+```text
+MES Device Gateway 作为 Modbus TCP Client
+        ↓
+USR-TCP232-304 做 Modbus TCP → Modbus RTU 转换
+        ↓
+RS485 总线上的 Modbus RTU 从站设备
+```
+
+配置建议：
+
+1. 生产现场使用静态 IP 或 DHCP 保留地址，避免设备重启后 IP 变化。
+2. 由 MES Device Gateway 统一维护寄存器点位表、轮询周期、数据类型、字节序和单位。
+3. 304 只承担网络到串口转换，不在设备内固化 MES 业务语义。
+4. 每个 304 建议在 MES 中登记为 `adapter_id`，其后端真实仪表或设备登记为独立 `device_id`。
+5. 状态、计数类点位可 1s-5s 轮询；慢变量建议 5s-60s，避免 RS485 总线拥塞。
+
+#### 现场风险
+
+| 风险 | 说明 | 建议 |
+|---|---|---|
+| 供电不匹配 | 304 使用 5V 供电，工业柜常见为 24VDC | 采用可靠 24V 转 5V 隔离电源 |
+| 单路 RS485 | 只适合单条总线或少量设备 | 复杂产线选多串口工业网关 |
+| 半双工通信 | RS485 不能双向同时传输 | 轮询周期和超时要保守配置 |
+| Modbus 方向限制 | 某些版本开启 Modbus 网关时要求网络端发起问询、串口端回复 | MES 网关按 Modbus TCP Client 主动轮询设计 |
+| 点位能力有限 | 自定义轮询和边缘点位数量有限 | 复杂采集逻辑放在 MES Device Gateway |
+| 现场抗干扰 | RS485 布线、接地、终端电阻会影响稳定性 | 实施时检查屏蔽线、终端电阻、站号冲突 |
+
+#### PRE-06 结论
+
+USR-TCP232-304 可作为 MES 阶段 B 的低成本适配设备，用于验证 RS485/Modbus RTU 设备接入链路。它适合解决“串口设备联网”和“简单 Modbus RTU 转 TCP”问题，但不替代 MES Device Gateway，也不承担追溯、质量判定、工单绑定等业务能力。
+
 ## 10. TCP/ASCII 调研
 
 TCP/ASCII 是很多设备厂商最容易提供的接口形式，常见于导通测试仪、裁线机、压接机控制软件、厂商上位机。
@@ -732,6 +812,7 @@ Production Event / Quality Record / Trace Event
 - MQTT.org：MQTT 协议说明，https://mqtt.org/
 - Eclipse Sparkplug：Sparkplug Specification，https://sparkplug.eclipse.org/specification/
 - Modbus Organization：Modbus Application Protocol Specification，https://modbus.org/specs.php
+- 有人物联网：USR-TCP232-304 产品页，https://www.usr.cn/Product/172
+- 有人物联网：USR-TCP232-304 Modbus 网关功能示例，https://www.usr.cn/Faq/1823.html
 - Komax：WPCS / Wire Processing Communication Standard，https://www.komaxgroup.com/
 - IPC：The Hermes Standard IPC-HERMES-9852，https://www.the-hermes-standard.info/
-
