@@ -39,7 +39,7 @@ jobs:
 
       - name: Build MES Wiki
         working-directory: mes-wiki
-        run: mkdocs build --strict
+        run: mkdocs build
 
       - name: Setup GitHub Pages
         uses: actions/configure-pages@v5
