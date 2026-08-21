@@ -43,6 +43,7 @@
 - [23 数据生命周期与归档](23-data-lifecycle.md)
 - [24 测试、验收与上线门禁](24-test-acceptance.md)
 - [25 阶段路线图与开发顺序](25-roadmap.md)
+- [26 线束 MES 软件设计总览](26-software-design.md)
 
 ## 文档状态说明
 
